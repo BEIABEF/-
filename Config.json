@@ -1,0 +1,31 @@
+js:
+const File = $.require("hiker://page/File.js?rule=某聚合");
+
+let localConfig = {};
+
+try {
+    localConfig = JSON.parse(File.readFile(getPath("hiker://files/rules/files/某聚合/config.json").slice(7)));
+} catch (e) {
+    deleteFile("config.json");
+}
+const Config = Object.assign({
+    homePath: getPath("hiker://files/ComicsBookShelf").slice(7),
+    logNum: 10,
+    threadNum: 0,
+    def_isPaginate: "1", //1默认开启分页，0默认关闭
+    viewPageSize: 200,
+    def_Pic: "hiker://images/home_pic4",
+    def_Lord_Type: "comic",
+    def_View_Style: "text_1",
+    def_DoVi_Style: "text_2",
+    def_DoVi_Type: "1", //0全部, 1未完成，2已完成
+    def_isComicCompatible: "0"
+}, localConfig);
+const PATHS = {
+    comicPath: "/某漫画/",
+    contentsCache: "/目录缓存/"
+}
+
+
+Object.keys(PATHS).forEach(key => Config[key] = Config.homePath + PATHS[key]);
+$.exports = Config;
