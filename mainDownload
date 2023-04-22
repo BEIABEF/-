@@ -1,0 +1,86 @@
+const File = $.require("hiker://page/File.js");
+const Config = $.require("hiker://page/Config.json");
+const Tool = $.require("hiker://page/Tool.js");
+
+$.exports.novel = function novel(item, info, order, MY_ID, interrupt) {
+    let mainPath = Config.novelPath + "/" + info.ruleName + "/" + Tool.textShield(info.bookName) + "/";
+    let chapterPath = mainPath + order + "$A$" + Tool.textShield(item.title) + ".txt";
+    let content = "";
+    if (interrupt && getMyVar(MY_ID + ":status", "") === "1") {
+        return -1;
+    }
+    try {
+        let getContent = new Function("input", "url", "return " + info.parseCode);
+        content = getContent(item.url, item.url) || "";
+    } catch (e) {
+        e.message = "<小说正文解析错误> " + e.message;
+        throw e;
+    }
+    if (!content) {
+        toast("小说为空");
+        throw new Error("<小说正文解析错误：正文返回为空>");
+    }
+    if (info.bookTopPic) {
+        try {
+            let bookTopPic = Tool.hikerPic(info.bookTopPic);
+            Tool.picDownload(bookTopPic[0], mainPath + info.bookName + ".jpg", bookTopPic[1], info.decode);
+
+        } catch (e) {
+            log("<封面下载错误> " + e.message);
+        }
+    }
+    File.fileWrite(chapterPath, content.replace(/<script>.*?<\/script>/gmi, "").trimRight());
+    //File.renameFile(chapterPath, order + "$A$" + item.title + ".txt");
+}
+
+$.exports.comic = function comic(item, info, order, MY_ID, interrupt) {
+    let mainPath = Config.comicPath + "/" + info.ruleName + "/" + Tool.textShield(info.bookName) + "/";
+    let chapterPath = mainPath + order + "$B$" + Tool.textShield(item.title) + "/";
+    let picList = [];
+    try {
+        let getPicList = new Function("input", "url", "return" + info.parseCode);
+        picList = getPicList(item.url, item.url);
+        if (typeof picList === "string") {
+            picList = picList.replace("pics://", "").split("&&");
+        }
+    } catch (e) {
+        e.message = "<漫画图片解析错误> " + e.message;
+        throw e;
+    }
+    picList = picList.filter(p => p);
+    const L = picList.length;
+    if (L === 0) {
+        toast("图片链接为空");
+        throw new Error("<漫画图片解析错误：图片链接返回为空>");
+    }
+    if (info.bookTopPic) {
+        try {
+            let bookTopPic = Tool.hikerPic(info.bookTopPic);
+            Tool.picDownload(bookTopPic[0], mainPath + info.bookName + ".jpg", bookTopPic[1], info.decode);
+        } catch (e) {
+            log("<封面下载错误> " + e.message);
+        }
+    }
+
+    let errorNum = 0;
+    for (var i = 0; i < L; i++) {
+        try {
+            let pic = Tool.hikerPic(picList[i]);
+            Tool.picDownload(pic[0], chapterPath + (i + 1) + ".jpg", pic[1], info.decode);
+            if (interrupt && getMyVar(MY_ID + ":status", "") === "1") {
+                return -1;
+            }
+            errorNum = 0;
+        } catch (e) {
+            if (errorNum < 10) {
+                i--;
+                errorNum++;
+                continue;
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    File.renameFile(chapterPath, order + "$A$" + Tool.textShield(item.title));
+}
