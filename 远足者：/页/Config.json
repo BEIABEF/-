@@ -51,5 +51,3 @@ const PATHS = {
 Object.keys(PATHS).forEach(key => Config[key] = Config.homePath + PATHS[key]);
 
 $.exports = Config;
-
-的
