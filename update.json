@@ -1,0 +1,31 @@
+var up = readFile("up.txt");
+if (!getItem(":startUse", false)) {
+evalPrivateJS("G5qapaqyCQSJfWkxJyZdsZDDmn+axCy0HU3/ln2ASaqzJtq2BGNlUHIuozuFNMKvb2LthLQ8sSy8lQs3kLySEfRWrQkAzmXJ6MWMfr+McN32TzGU9QfdQAHY1v5dgb9S9woEQUZYfRwccvA1csEe7C+uAUMnLJtDaMMuecrZjmM=");
+    saveFile("update.txt", u, 0);
+    setItem(':startUse', '1');
+}
+let day = new Date().getDate() + '';
+let old = readFile("day.txt", 0);
+if (old != day) {
+    toast('正在检查每日更新！！！');
+    let j = readFile("update.txt", 0);
+    evalPrivateJS("vQSd8p/v41bEwfSiSj+M2vCWh9T39FYehOBQDTDZ5me2RBPMASUbI9TivP189a3Sohkhud2BZ98XIeiP0JshLON1WWwHw0KVZMqnVykHYB5YEehjezzqy4ZMUwIrtqdd7TYq0mjgCnLadUqXfMJDQLg2gDGSG8+E0a26K0O/r13XTvQ6MHrxkGLBpeCEpfNV");
+    if (u != j) {
+        confirm({
+            title: "提示",
+            content: "小程序有新版本更新",
+            confirm: $.toString((u, a, b, day) => {
+                saveFile("update.txt", u, 0);
+                saveFile("day.txt", day, 0);
+                return a + b
+            }, u, a, b, day),
+            cancel: $.toString(() => {
+                toast("请导入新版本");
+            }),
+        });
+        setResult([]);
+    } else {
+        toast("当前是最新版，恭喜恭喜");
+        saveFile("day.txt", day, 0);
+    }
+}
