@@ -1,0 +1,168 @@
+var d = [];
+d.push({
+    img: 'https://ghproxy.com/https://raw.githubusercontent.com/ls125781003/lmtubiao/main/more/43.png',
+    title: '下载',
+    url: "hiker://download",
+    col_type: "icon_4"
+}, {
+    img: 'https://ghproxy.com/https://raw.githubusercontent.com/ls125781003/lmtubiao/main/more/67.png',
+    title: '历史',
+    url: "hiker://history?rule=某聚合",
+    col_type: "icon_4"
+}, {
+    img: 'https://ghproxy.com/https://raw.githubusercontent.com/ls125781003/lmtubiao/main/more/5.png',
+    title: '收藏',
+    url: "hiker://collection?group=～～～",
+    col_type: "icon_4"
+}, {
+    img: 'https://ghproxy.com/https://raw.githubusercontent.com/ls125781003/lmtubiao/main/more/29.png',
+    title: '书架',
+    url: "hiker://page/Main.view#noHistory##noRecordHistory#",
+    col_type: "icon_4"
+})
+
+let name = getItem("name", "hanime1动漫");
+let names = ["全部", "hanime1动漫", "hanime1漫画", "麻豆", "麻豆club", "小黄书", "rule34video", "yande", "xvideo", "jable", "wnacg", "spankbang", "noodlemagazine(纯搜索)", "hitxhot", "pornhub", "ehentai", "kaizty"];
+d.push({
+    title: "🔍",
+    url: $.toString(() => {
+        putMyVar('keyword', input);
+        let name = getItem("name", "hanime1动漫");
+        if (name == "hitxhot") return 'hiker://page/search?p=#noHistory##fullTheme##noRecordHistory#fypage&type=' + name + '&kw=' + input;
+if (name == "全部") return 'hiker://page/search?p=hiker://empty#fypage#noHistory##noRecordHistory#&type=全部&kw=' + input;
+        return 'hiker://page/search?p=#noHistory##noRecordHistory#fypage&type=' + name + '&kw=' + input;
+    }),
+    desc: '当前搜索引擎:' + name,
+    col_type: "input",
+    extra: {
+        defaultValue: getMyVar('keyword', '') || "",
+    }
+}, {
+    title: '““””<small><font color="#f1441d">点击选择搜索引擎</font></small>',
+    col_type: "text_center_1",
+    url: $(names.map(v => v === name ? "““" + v + "””" : v)).select((name) => {
+        if (/““.*?””/.test(input)) return;
+        setItem("name", input);
+        refreshPage();
+    })
+});
+
+d.push({
+    title: '‘‘’’<font color="#1E4F86">hanime1</font>' + '\n' + '<small><font color="#1E4F86">(可长按)</font></small>',
+    pic_url: "https://assets.yande.re/data/preview/98/16/9816fdd0f62ad7224f54fcc2a7399a9f.jpg",
+    url: "hiker://page/main?url=hiker://empty#fypage#noHistory##noRecordHistory##noRefresh#",
+    col_type: "card_pic_2_2_left",
+    extra: {
+        longClick: [{
+            title: '导入最新规则(强制)',
+            js: $.toString(() => {
+                deleteFile("day.txt");
+                deleteFile("update.txt");
+                refreshPage();
+                return "hiker://empty";
+            })
+        }]
+    }
+
+}, {
+    title: '‘‘’’<font color="#f1441d">麻豆</font>',
+    pic_url: "https://assets.yande.re/data/preview/5a/e1/5ae17c396f707b2c1a7bc73c9acb3461.jpg",
+    url: "hiker://page/madou_main?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2",
+
+}, {
+    title: '‘‘’’<font color="#FFE4E1">麻豆club</font>',
+    pic_url: "https://assets.yande.re/data/preview/71/6b/716b5e6b7ed6ecfe2bddde57e8de408d.jpg",
+    url: "hiker://page/madouclub?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2",
+
+}, {
+    title: '‘‘’’<font color="#fca104">rule34video</font>' + '\n' + '<small><font color="#fca104">(多线路)</font></small>',
+    pic_url: "https://assets.yande.re/data/preview/1a/96/1a96ced31372b85d3891924ad65faf00.jpg",
+    url: "hiker://page/rule34video?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2_left",
+
+}, {
+    title: '‘‘’’<font color="#fca104">小黄书</font>',
+    pic_url: "https://assets.yande.re/data/preview/ca/dc/cadcdb5a0811e407ee24cb895f1dc59e.jpg",
+    url: "hiker://page/小黄书?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2_left",
+
+}, {
+    title: '‘‘’’<font color="#FFE4E1">xvideo</font>' + '\n' + '<small><font color="#FFE4E1">(多线路)</font></small>',
+    pic_url: "https://assets.yande.re/data/preview/67/18/6718cc3fa830e3218ad2ac40bb6648e2.jpg",
+    url: "hiker://page/xvideo?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2",
+
+}, {
+    title: '‘‘’’<font color="#f1441d">yande</font>',
+    pic_url: "https://assets.yande.re/data/preview/89/8d/898d476cb5c9ad63be38177494e0907d.jpg",
+    url: "hiker://page/yande?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2",
+
+}, {
+    title: '‘‘’’<font color="#ffffff">jable</font>',
+    pic_url: "https://assets.yande.re/data/preview/06/cd/06cd840ee00f182b8e84cdabdcfca4e5.jpg",
+    url: "hiker://page/jable?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2_left",
+
+}, {
+    title: '‘‘’’<font color="#fa7e23">某色网</font>',
+    pic_url: "https://assets.yande.re/data/preview/29/3e/293e0ac5d9266d49f5046ffe5c1061a3.jpg",
+    url: "hiker://page/sewang?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2_left",
+
+}, {
+    title: '‘‘’’<font color="#f1441d">18H漫画</font>' + '\n' + '<small><font color="#f1441d">(旧类漫画)</font></small>',
+    pic_url: "https://assets.yande.re/data/preview/1a/96/1a96ced31372b85d3891924ad65faf00.jpg",
+    url: "hiker://page/18H?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2",
+
+}, {
+    title: '‘‘’’<font color="#f1441d">wnacg漫画</font>' + '\n' + '<small><font color="#f1441d">(只能下载zip)</font></small>',
+    pic_url: "https://assets.yande.re/data/preview/02/51/025161c6bedc91b5393e77f58190fb59.jpg",
+    url: "hiker://page/wnacg?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2",
+
+}, {
+    title: '‘‘’’<font color="#f1441d">spankbang</font>',
+    desc: '0',
+    pic_url: "https://files.yande.re/jpeg/52285da077745b8d8df32716b4a61d59/yande.re%201071830%20animal_ears%20bandaid%20lethe_%28lethe187%29%20tail.jpg",
+    url: "hiker://page/spankbang?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2_left",
+
+}, {
+    title: '‘‘’’<font color="#f1441d">e-hentai</font>'+ '\n' + '<small><font color="#f1441d">(容易被封ip)</font></small>',
+    desc: '0',
+    pic_url: "https://files.yande.re/image/33298ee201d2054aa1288295c7e694d4/yande.re%201069351%20animal_ears%20bathing%20bunny_ears%20echocalypse%20horns%20naked%20onsen%20pointy_ears%20sake%20see_through%20suraimu_%28suraimuraimu%29%20tail%20towel%20wallpaper%20wet%20wings.jpg",
+    url: "hiker://page/ehentai?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2_2_left",
+
+}, {
+    title: '‘‘’’<font color="#f1441d">fikfap</font>',
+    desc: '0',
+    pic_url: "https://files.yande.re/image/708a7152ee259b94e5e4517761774a5e/yande.re%201082384%20animal_ears%20ass%20garter%20no_bra%20tagme%20tail%20thighhighs%20wet.jpg",
+    url: "hiker://page/fikfap?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_2",
+
+}, {
+    title: '‘‘’’<font color="#f1441d">hitxhot</font>',
+    desc: '0',
+    pic_url: "https://files.yande.re/image/192a81a25a9ad2453ce698aae527e6ea/yande.re%201076091%20animal_ears%20garter%20habu_rin%20karyl_%28princess_connect%29%20nekomimi%20princess_connect%20princess_connect%21_re%3Adive%20skirt_lift%20thighhighs%20undressing%20wallpaper.jpg",
+    url: "hiker://page/hitxhot?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_1",
+
+}, {
+    title: '‘‘’’<font color="#f1441d">pornhub</font>' + '\n' + '<small><font color="#f1441d">(多线路)</font></small>',
+    desc: '0',
+    pic_url: "https://files.yande.re/image/0228d3c397943a310bdaebbfb75bd939/yande.re%201074856%20animal_ears%20maoao%20naked%20neko%20nekomimi%20nipples%20thighhighs.jpg",
+    url: "hiker://page/pornhub?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_1",
+
+}, {
+    title: '‘‘’’<font color="#f1441d">kaizty</font>',
+    desc: '0',
+    pic_url: "https://files.yande.re/jpeg/041eef7aa42b979f027c46ac2b583040/yande.re%201106038%20angel%20ass%20blue_archive%20ichinose_asuna%20naked%20samart_normal%20wallpaper%20wet.jpg",
+    url: "hiker://page/kaizty?url=hiker://empty#fypage#noHistory##noRecordHistory#",
+    col_type: "card_pic_1",
+})
